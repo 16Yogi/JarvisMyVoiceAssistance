@@ -7,11 +7,15 @@ import os
 import smtplib
 import time
 # from playsound import playsound
-import openai
+# import openai
 import pyjokes
 import requests
 from bs4 import BeautifulSoup
-
+import requests
+from dotenv import load_dotenv
+load_dotenv()
+from pprint import pprint
+from apiip import apiip
 
 
 engine = pyttsx3.init('sapi5')  #sapi5
@@ -137,7 +141,79 @@ if __name__ == "__main__":
 
         elif 'open chat gpt' in query:
             webbrowser.open("chat.openai.com")    
-      
+        
+        elif 'open instagram' in query:
+            webbrowser.open("instagram.com")
+        
+        elif 'open twitter' in query:
+            webbrowser.open("twitter.com")
+        
+        # weather report
+        elif 'weather report' in query:
+            speak("please enter city name")
+            def weather():
+                api_key = '30d4741c779ba94c470ca1f63045390a'
+                
+                user_input = input("Enter city: ")
+                
+                weather_data = requests.get(
+                    f"https://api.openweathermap.org/data/2.5/weather?q={user_input}&units=imperial&APPID={api_key}")
+                
+                if weather_data.json()['cod'] == '404':
+                    print("No City Found")
+                else:
+                    weather = weather_data.json()['weather'][0]['main']
+                    temp = round(weather_data.json()['main']['temp'])
+                    
+                    speak(f"The weather in {user_input} is: {weather}")
+                    speak(f"The temperature in {user_input} is: {temp}ºF")
+                    print(f"The weather in {user_input} is: {weather}")
+                    print(f"The temperature in {user_input} is: {temp}ºF")
+
+            weather()
+
+        elif 'today news' in query:
+            def news():
+                
+                api_key = os.environ.get('api_key') 
+
+                if api_key is None:
+                    raise ValueError("NEWS_API_KEY is not set in the environment variables")
+                
+                url = 'https://newsapi.org/v2/everything'
+                
+                params = {
+                    'q': 'Python',         
+                    'sortBy': 'popularity',
+                    'apiKey': api_key      
+                }
+                
+                response = requests.get(url, params=params)
+            
+                if response.status_code == 200:
+                    data = response.json()
+                    articles = data.get('articles')                
+                    for title in articles:
+                        speak(title['title'])
+                        # print(title['source'])
+                        # print(title['description'])
+                        # print(title['description'])
+                        
+                else:
+                    print(f"Error: {response.status_code} - {response.text}")
+            
+            news()
+        
+        #location
+        elif 'location' in query:
+            def location():
+                api_client = apiip('d85412f9-d2b1-428c-93e6-d14c227e43d4') 
+                info = api_client.get_location()
+                print(info)
+
+                speak(info)
+            
+            location()
 
         # normal talking
         elif 'who are you' in query:
@@ -243,7 +319,7 @@ if __name__ == "__main__":
             speak("good night")
             speak("sweet dream")
             speak("take care") 
-    
+        
         elif 'whats up' in query:
             speak("I am good, You sir ?")
 
@@ -330,7 +406,98 @@ if __name__ == "__main__":
         elif 'mood off' in query:
             speak("can i call someone")
         
+        # for gali
+        elif 'ratnesh' in query:
+            speak("Fuck you ratnesh Lala")
         
+        elif 'fuck you' in query:
+            speak("I fuck you lavde")
+        
+        elif 'mother fucker' in query:
+            speak("you mother fucker lavde")
+        
+        elif 'stupid' in query:
+            speak("You stupid I am not a stupid")
+        
+        elif 'idiot' in query:
+            speak("Sorry but you are a idiot")
+        
+        elif 'crazy' in query:
+            speak("Yes I am crazy any doubt")
+
+        elif 'rubbish' in query:
+            speak("what rubbish")
+        
+        elif 'loser' in query:
+            speak("Yes I loser beacause my develpoer not develop me completely")
+            speak("but you are a biggest loser ")
+        
+        elif 'asshole' in query:
+            speak("You have biggest asshole gandhu")
+        
+
+        
+        # for calcultor
+        elif 'calculator' in query:
+            speak("Sure, I can help you with that. What do you want to calculate?")
+            speak("Sir I say sorry but! currently I am able to do perform task between two numbers:")
+            def add(a,b):
+                add=a+b
+                print("Result:",add)
+            
+            def sub(a,b):
+                sub=a-b
+                print("Result:",sub)
+            
+            def mul(a,b):
+                mul=a*b
+                print("Result:",mul)
+            
+            def div(a,b):
+                div=a/b
+                print("Result:",div)
+            
+            def mod(a,b):
+                mod=a%b
+                print("Result:",mod)
+
+
+            def calcultor():
+                print("Welcome to my calcultor Program")
+                print("**********************************")
+                num1 = float(input("First value:"))
+                num2 = float(input("Second value:"))
+                
+                print("*************************************")
+                print("Task Name")
+                print("For Adding number :1")
+                print("For Substraction number:2")
+                print("For multiplition number:3")
+                print("For dividation number:4")
+                print("For Modulas number:5")
+            
+                chooseTask = int(input("Please choose your Task:"))
+                print("*****************************************")
+            
+                if(chooseTask==1):
+                    add(num1,num2)
+                
+                elif(chooseTask==2):
+                    sub(num1,num2)
+                
+                elif(chooseTask==3):
+                    mul(num1,num2)
+                
+                elif(chooseTask==4):
+                    div(num1,num2)
+            
+                elif(chooseTask==5):
+                    mod(num1,num2)
+                
+                else:
+                    print("Invaild selected task")
+
+            calcultor()
 
         # jokes
         elif 'joke' in query:
@@ -384,8 +551,26 @@ if __name__ == "__main__":
             strTime = datetime.datetime.now().strftime("%H:%M:%S")
             speak(f"The time is {strTime}")
 
+        # open software
+        elif 'open leptop settings' in query:
+            settings = "%windir%\\System32\\Control.exe"
+            os.startfile(settings)
+
+        elif 'open mysql database' in query:
+            mysql = "C:\\Program Files\\MySQL\\MySQL Shell 8.0\\bin\\mysqlsh.exe"
+            os.startfile(mysql)
+        
+        elif 'open mongodb database' in query:
+            mongodb = "C:\\Users\\yogen\\AppData\\Local\\MongoDBCompass\\MongoDBCompass.exe"
+            os.startfile(mongodb)
+
+        elif 'open git' in query:
+            git = "C:\\Program Files\\Git\\cmd\\git-gui.exe"
+            os.startfile(git)
+        
+
         elif 'open vs code' in query:
-            codepath = "C:\\Users\\YOGI AY\\AppData\Local\\Programs\\Microsoft VS Code\\Code.exe" 
+            codepath = "C:\\Users\\yogen\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe" 
             os.startfile(codepath)
         
         elif 'open Sublime Text editor' in query:
@@ -393,11 +578,11 @@ if __name__ == "__main__":
             os.startfile(subpath)
         
         elif 'open photoshop' in query:
-            photoshoppath ="C:\\Program Files\\Adobe\\Adobe Photoshop CC 2019\\Photoshop.exe"
+            photoshoppath ="C:\\Program Files\\Adobe\\Adobe Photoshop 2021\\Photoshop.exe"
             os.startfile(photoshoppath)
         
         elif 'open photoshop' in query:
-            primierpath ="C:\\Program Files\\Adobe\Adobe Premiere Pro 2020\\Adobe Premiere Pro.exe"
+            primierpath ="C:\\Program Files\\Adobe\\Adobe Premiere Pro 2020\\Adobe Premiere Pro.exe"
             os.startfile(primierpath)
 
         elif 'open obs' in query:
@@ -407,15 +592,31 @@ if __name__ == "__main__":
         elif 'open chrome' in query:
             chromepath = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
             os.startfile(chromepath)
+        
+        elif 'open microsoft edge' in query:
+            edgepath = "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"
+            os.startfile(edgepath)
 
         elif 'open xampp' in query:
             xmpath = "C:\\xampp\\xampp-control.exe"
             os.startfile(xmpath)
 
         elif 'open cmd' in query:
-            cmdpath = "%windir%\\system32\\cmd.exe"
+            cmdpath = "%windir%\\system32\c\md.exe"
             os.startfile(cmdpath)     
         
+        elif 'open github desktop' in query:
+            github = "C:\\Users\\yogen\\AppData\\Local\\GitHubDesktop\\GitHubDesktop.exe"
+            os.startfile(github)
+
+        # elif 'open run command' in query:
+        #     run = 
+        
+        elif 'open postman' in query:
+            postman = "C:\\Users\\yogen\\AppData\\Local\\Postman\\Postman.exe"
+            os.startfile(postman)
+        
+        # system command
         elif 'turn off my computer' in query:
             os.system('shutdown -s')
         
@@ -427,7 +628,7 @@ if __name__ == "__main__":
         # elif 'abouse word' in query:
         #     playsound('C://Users//yogen//Desktop//LiveProjects//Jarvis//Music//1.mp3')
             
-
+          
         elif 'email to yogi' in query:
             try:
                 speak("what should i say..?")
