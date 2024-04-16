@@ -407,7 +407,7 @@ if __name__ == "__main__":
             speak("can i call someone")
         
         # for gali
-        elif 'ratnesh' in query:
+        elif 'martand' in query:
             speak("Fuck you ratnesh Lala")
         
         elif 'fuck you' in query:
